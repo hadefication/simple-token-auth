@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SimpleTokenAuthMiddleware
 {
     protected $auth;
+
     protected $limiter;
 
     public function __construct(SimpleTokenAuth $auth, RateLimiter $limiter)
@@ -25,8 +26,9 @@ class SimpleTokenAuthMiddleware
             return response()->json(['message' => 'Too Many Attempts.'], Response::HTTP_TOO_MANY_REQUESTS);
         }
 
-        if (!$this->auth->validateToken($request, $service)) {
+        if (! $this->auth->validateToken($request, $service)) {
             $this->limiter->hit($this->getRateLimitKey($request));
+
             return response()->json(['message' => 'Unauthenticated.'], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -41,7 +43,7 @@ class SimpleTokenAuthMiddleware
 
     protected function isRateLimited(Request $request): bool
     {
-        if (!$this->getRateLimitingConfig('enabled')) {
+        if (! $this->getRateLimitingConfig('enabled')) {
             return false;
         }
 
@@ -53,7 +55,7 @@ class SimpleTokenAuthMiddleware
 
     protected function getRateLimitKey(Request $request): string
     {
-        return 'simple-token-auth|' . sha1($request->ip());
+        return 'simple-token-auth|'.sha1($request->ip());
     }
 
     protected function getRateLimitingConfig(string $key)

@@ -35,16 +35,16 @@ it('validates a token from the x api token header', function () {
 
 it('logs failed attempts if enabled', function () {
     config()->set('simple-token-auth.log_failed_attempts', true);
-    
+
     // Create a fresh instance with mocked log
     $mockLog = Mockery::mock('Psr\Log\LoggerInterface');
     $mockLog->shouldReceive('warning')->once();
-    
+
     $auth = new \Hadefication\SimpleTokenAuth\SimpleTokenAuth(
         $this->app->make('config'),
         $mockLog
     );
-    
+
     $request = Request::create('/', 'GET', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer wrong-token']);
     $auth->validateToken($request);
 });
@@ -69,27 +69,27 @@ it('handles null token gracefully', function () {
 it('validates multiple service tokens', function () {
     config()->set('simple-token-auth.tokens.service1', 'token1');
     config()->set('simple-token-auth.tokens.service2', 'token2');
-    
+
     $request1 = Request::create('/', 'GET', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer token1']);
     $request2 = Request::create('/', 'GET', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer token2']);
-    
+
     expect($this->auth->validateToken($request1, 'service1'))->toBeTrue();
     expect($this->auth->validateToken($request2, 'service2'))->toBeTrue();
 });
 
 it('uses hash_equals for timing attack resistance', function () {
     $request = Request::create('/', 'GET', [], [], [], ['HTTP_AUTHORIZATION' => 'Bearer test-token']);
-    
+
     // This test verifies that hash_equals is used internally
     // We can't directly test the timing, but we can verify the behavior
     $start = microtime(true);
     $this->auth->validateToken($request, 'test-service');
     $validTime = microtime(true) - $start;
-    
+
     $start = microtime(true);
     $this->auth->validateToken($request, 'wrong-service');
     $invalidTime = microtime(true) - $start;
-    
+
     // The times should be reasonably similar (within 50ms) if hash_equals is used
     expect(abs($validTime - $invalidTime))->toBeLessThan(0.05);
 });

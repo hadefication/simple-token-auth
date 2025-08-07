@@ -3,12 +3,13 @@
 namespace Hadefication\SimpleTokenAuth;
 
 use Illuminate\Contracts\Config\Repository as Config;
-use Psr\Log\LoggerInterface as Log;
 use Illuminate\Http\Request;
+use Psr\Log\LoggerInterface as Log;
 
 class SimpleTokenAuth
 {
     protected $config;
+
     protected $log;
 
     public function __construct(Config $config, Log $log)
@@ -27,7 +28,7 @@ class SimpleTokenAuth
 
         $valid = $this->isValid($token, $service);
 
-        if (!$valid && $this->config->get('simple-token-auth.log_failed_attempts')) {
+        if (! $valid && $this->config->get('simple-token-auth.log_failed_attempts')) {
             $this->log->warning('Failed token authentication attempt.', [
                 'ip' => $request->ip(),
                 'url' => $request->fullUrl(),

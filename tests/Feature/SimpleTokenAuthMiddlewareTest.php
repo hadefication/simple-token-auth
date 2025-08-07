@@ -56,17 +56,17 @@ it('clears rate limit on successful authentication', function () {
 
     // Fail once
     $this->withHeaders(['Authorization' => 'Bearer wrong-token'])->get('/test-route')->assertStatus(Response::HTTP_UNAUTHORIZED);
-    
+
     // Succeed - should clear the rate limit
     $this->withHeaders(['Authorization' => 'Bearer fallback-token'])->get('/test-route')->assertStatus(Response::HTTP_OK);
-    
+
     // Should be able to fail again without hitting rate limit
     $this->withHeaders(['Authorization' => 'Bearer wrong-token'])->get('/test-route')->assertStatus(Response::HTTP_UNAUTHORIZED);
 });
 
 it('respects rate limiting configuration', function () {
     config()->set('simple-token-auth.rate_limiting.enabled', false);
-    
+
     // Should not rate limit when disabled
     for ($i = 0; $i < 10; $i++) {
         $this->withHeaders(['Authorization' => 'Bearer wrong-token'])

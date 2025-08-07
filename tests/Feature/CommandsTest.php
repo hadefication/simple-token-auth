@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Str;
-
 it('can generate a token', function () {
     $this->artisan('simple-token:generate')
         ->expectsOutputToContain('Generated token for service')
@@ -50,7 +48,7 @@ it('generates cryptographically secure tokens', function () {
     $this->artisan('simple-token:generate')
         ->expectsOutputToContain('Generated token for service')
         ->assertExitCode(0);
-        
+
     $this->artisan('simple-token:generate')
         ->expectsOutputToContain('Generated token for service')
         ->assertExitCode(0);
@@ -70,7 +68,7 @@ it('displays configuration information correctly', function () {
     config()->set('simple-token-auth.rate_limiting.max_attempts', 100);
     config()->set('simple-token-auth.rate_limiting.lockout_duration', 300);
     config()->set('simple-token-auth.log_failed_attempts', true);
-    
+
     $this->artisan('simple-token:info')
         ->expectsOutputToContain('service1')
         ->expectsOutputToContain('service2')
@@ -85,7 +83,7 @@ it('displays configuration information correctly', function () {
 it('handles empty configuration gracefully', function () {
     config()->set('simple-token-auth.tokens', []);
     config()->set('simple-token-auth.fallback_token', null);
-    
+
     $this->artisan('simple-token:info')
         ->expectsOutputToContain('No tokens configured.')
         ->assertExitCode(0);
@@ -96,5 +94,6 @@ function maskToken(string $token): string
     if (strlen($token) <= 8) {
         return '********';
     }
-    return substr($token, 0, 4) . '********' . substr($token, -4);
+
+    return substr($token, 0, 4).'********'.substr($token, -4);
 }

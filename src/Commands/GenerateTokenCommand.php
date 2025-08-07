@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 class GenerateTokenCommand extends Command
 {
     protected $signature = 'simple-token:generate {service?} {--length=64} {--show-env} {--save}';
+
     protected $description = 'Generate a new token for a service.';
 
     public function handle()
@@ -38,14 +39,14 @@ class GenerateTokenCommand extends Command
 
     protected function getEnvVariableName(?string $service): string
     {
-        return $service ? 'API_TOKEN_' . Str::upper(str_replace('-', '_', $service)) : 'API_TOKEN';
+        return $service ? 'API_TOKEN_'.Str::upper(str_replace('-', '_', $service)) : 'API_TOKEN';
     }
 
     protected function saveToEnvFile(string $envVar, string $token): void
     {
         $envPath = base_path('.env');
-        
-        if (!file_exists($envPath)) {
+
+        if (! file_exists($envPath)) {
             // Create .env file if it doesn't exist
             file_put_contents($envPath, "# Laravel Environment File\n");
         }
@@ -54,8 +55,8 @@ class GenerateTokenCommand extends Command
         $newLine = "\n{$envVar}={$token}";
 
         // Always append to .env file
-        file_put_contents($envPath, $envContent . $newLine);
-        
+        file_put_contents($envPath, $envContent.$newLine);
+
         $this->line('');
         $this->info("Token saved to .env file as: {$envVar}");
     }
@@ -65,13 +66,13 @@ class GenerateTokenCommand extends Command
         $this->line('');
         $this->line('Next steps:');
         $this->line('1. Add the following to your config/simple-token-auth.php file:');
-        
+
         if ($service) {
             $this->line("   '{$service}' => env('{$envVar}'),");
         } else {
             $this->line("   'fallback_token' => env('{$envVar}'),");
         }
-        
+
         $this->line('');
         $this->line('2. Clear config cache: php artisan config:clear');
         $this->line('');

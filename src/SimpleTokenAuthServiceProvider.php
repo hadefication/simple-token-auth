@@ -2,11 +2,11 @@
 
 namespace Hadefication\SimpleTokenAuth;
 
-use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 use Hadefication\SimpleTokenAuth\Commands\GenerateTokenCommand;
 use Hadefication\SimpleTokenAuth\Commands\TokenInfoCommand;
 use Hadefication\SimpleTokenAuth\Http\Middleware\SimpleTokenAuthMiddleware;
+use Spatie\LaravelPackageTools\Package;
+use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class SimpleTokenAuthServiceProvider extends PackageServiceProvider
 {
