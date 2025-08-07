@@ -1,17 +1,16 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "hadefication/simple-token-auth",
+    "description": "A lightweight Laravel package for server-to-server API authentication using static bearer tokens. This package provides a simpler alternative to Laravel Sanctum for internal APIs, microservices, and trusted system integrations. Uses spatie/laravel-package-tools package as base.",
     "keywords": [
-        ":vendor_name",
         "laravel",
-        ":package_slug"
+        "simple-token-auth"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/hadefication/simple-token-auth",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Glen Bangkila",
+            "email": "hadefication@gmail.com",
             "role": "Developer"
         }
     ],
@@ -35,14 +34,12 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "Hadefication\\SimpleTokenAuth\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/",
-            "Workbench\\App\\": "workbench/app/"
+            "Hadefication\\SimpleTokenAuth\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -63,10 +60,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "Hadefication\\SimpleTokenAuth\\SimpleTokenAuthServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "SimpleTokenAuth": "Hadefication\\SimpleTokenAuth\\Facades\\SimpleTokenAuth"
             }
         }
     },
